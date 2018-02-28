@@ -201,6 +201,9 @@ function setupUI(myApp){
 
     }
     function validateAbilityScores(newScore){
+        // Still not leaving errors where they need to stay and posting new errors
+        // maybe instead of doing the || check do two individual ifs to I can 
+        // drop an error message where ever there is a match?
         console.log(`validating: newScore.name = ${newScore.attr('name')}`);
         //var changed = $newscore.attr("name").slice(-1);
         var rg0 = publicAPI.$npcSelectedAbility0;
