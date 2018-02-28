@@ -7,19 +7,39 @@
     <body>
         <section id="creation_form">
             <h1>1. Create a basic NPC</h1>
-            <div class="form_container">
+            <section id="basic_info">
                 <div class="input_group">
                     <label for="npc_name">Name/type for NPC</label>
                     <input type="text" id="npc_name">
                 </div>
                 <div class="input_group">
+                    <!-- Need a better control than this. Need to build a better level picker -->
                     <label for="npc_cr">CR for NPC</label>
                     <input type="number" id="npc_cr">
                 </div>
-                
+                <div class="input_group">
+                    <h2 class="form_instruction">NPC type</h2>
+                    <ul class="radio_choice_list">
+                        <li>
+                            <label for="npc_type_combatant">Combatant</label>
+                            <input type="radio" name="npc_type" id="npc_type_combatant" value="combatant">
+                        </li>
+                        <li>
+                            <label for="npc_type_expert">Expert</label>
+                            <input type="radio" name="npc_type" id="npc_type_expert" value="expert">
+                        </li>
+                        <li>
+                            <label for="npc_type_spellcaster">Spellcaster</label>
+                            <input type="radio" name="npc_type" id="npc_type_spellcaster" value="spellcaster">
+                        </li>
+                    </ul>
+                </div>
+                </div>
+            </section>
+            <section id="ability_scores">
                 <div class="input_group">
                     <h2 class="form_instruction">Highest ability score modifier</h2>
-                    <ul class="radio_choice_list">
+                    <ul id="ability0_list" class="radio_choice_list">
                         <li>
                             <label for="npc_ability0_str">Strength</label>
                             <input type="radio" name="npc_ability0" id="npc_ability0_str" value="str">
@@ -49,7 +69,7 @@
             </div>
             <div class="input_group">
                 <h2 class="form_instruction">Second highest ability score modifier</h2>
-                <ul class="radio_choice_list">
+                <ul id="ability1_list"class="radio_choice_list">
                     <li>
                         <label for="npc_ability1_str">Strength</label>
                         <input type="radio" name="npc_ability1" id="npc_ability1_str" value="str">
@@ -77,8 +97,8 @@
                 </ul>
             </div>
             <div class="input_group">
-                <h2 class="form_instruction">Second highest ability score modifier</h2>
-                <ul class="radio_choice_list">
+                <h2 class="form_instruction">Third highest ability score modifier</h2>
+                <ul id="ability2_list" class="radio_choice_list">
                     <li>
                         <label for="npc_ability2_str">Strength</label>
                         <input type="radio" name="npc_ability2" id="npc_ability2_str" value="str">
@@ -106,6 +126,18 @@
                 </ul>
             </div>
         </section>
+        <section id="skills_section">
+            <h2>Master skills</h2>
+            <ul class="master_skill_list">
+            </ul>
+            <h2>Good Skills</h2>
+            <ul class="good_skill_list">
+            </ul>
+        </section>
+            <div class="input_group">
+                <button class="submit_button">Roll character</button>
+            </div>
+    </section>
         <!-- Only loading JQuery for the GUI stuff, because it's faster to prototype right now
              will eventually rip this out and port it all to React or Angular. The "app" itself 
              doesn't and shouldn't use any JQuery because it will be removed in the future

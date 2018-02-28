@@ -1,5 +1,8 @@
+'use strict';
 // create an application object
 var App = setupMobGenerator();
+var UI;
+
 // load the json files. This should be quick because they're local but because this is 
 // an async call this has to happen in a weird chain to avoid loading the UI before
 // we have all the table data. This feels like a good place for promises...
@@ -10,14 +13,241 @@ loadStats("js/json/combatant_array.json",function loadCombatantTable(response){
         loadStats("js/json/spellcaster_array.json", function loadSpellCasterTable(response){
             App.spellcaster_stats = JSON.parse(response);
             // init the UI here
+            UI = setupUI(App);
         });
     });
 });
 
 // ***************************
-function setupUI(){
+function setupUI(myApp){
     const creatureBlockTemplate = "<div class='creature_block'><h2 class='creature_name'></h2><table class='creature_abilities'></table><div class='creature_utilities'></div></div>";
-     
+    const skillsSelectorTemplate = "<li class='input_group'><label></label><select class='skill_selector'><option>Acrobatics</option><option>Athletics</option><option>Bluff</option><option>Computers</option><option>Culture</option><option>Diplomacy</option><option>Disguise</option><option>Engineering</option><option>Intimidate</option><option>Life Science</option><option>Medicine</option><option>Mysticism</option><option>Perception</option><option>Physical Science</option><option>Piloting</option><option>Profession</option><option>Sense Motive</option><option>Sleight of Hand</option><option>Stealth</option><option>Survival</option></select></li>";
+    const validationErrorTemplate = "<p class='validation_error'></p>";
+    const goodSkillsID = "good_skill";
+    const masterSkillsID = "master_skill";
+
+    var $createButton = $(".submit_button");
+    var $npcNameField = $("#npc_name");
+    var $npcCRField = $("#npc_cr");
+    var $npcTypeRadios = $("input[name='npc_type']");
+    var $npcAbility0Radios = $("input[name='npc_ability0']");
+    var $npcAbility1Radios = $("input[name='npc_ability1']");
+    var $npcAbility2Radios = $("input[name='npc_ability2']");
+    
+    // set sane defaults to all the fields except name
+    $npcCRField.val("0.33");// this needs to change when this field is replaced with a better control
+    $($npcTypeRadios[0]).attr("checked", "true");
+    $($npcAbility0Radios[0]).attr("checked", "true");
+    $($npcAbility1Radios[1]).attr("checked", "true");
+    $($npcAbility2Radios[2]).attr("checked", "true");
+
+    // define the selected types so they can be passed around the UI from jump
+    var $npcSelectedType = $("input[name='npc_type']:checked");
+    var $npcSelectedAbility0 = $("input[name='npc_ability0']:checked");
+    var $npcSelectedAbility1 = $("input[name='npc_ability1']:checked");
+    var $npcSelectedAbility2 = $("input[name='npc_ability2']:checked");
+
+    var publicAPI = {
+        $npcCRField,
+        $npcTypeRadios,
+        $npcSelectedType,
+        $npcAbility0Radios,
+        $npcAbility1Radios,
+        $npcAbility2Radios,
+        $npcSelectedAbility0,
+        $npcSelectedAbility1,
+        $npcSelectedAbility2,
+        updateAvailableSkillsSelectors
+    };
+
+    
+    // add the initial skills selectors
+    updateAvailableSkillsSelectors();
+    //set event listeners
+    $npcTypeRadios.change(handleTypeChange);
+    $npcAbility0Radios.change(handleAbilityChange);
+    $npcAbility1Radios.change(handleAbilityChange);
+    $npcAbility2Radios.change(handleAbilityChange);
+    $createButton.click(handleSubmit);
+
+    return publicAPI;
+    
+    function handleSubmit(e){
+        var npcName = $npcNameField.val();
+        var npcCR = $npcCRField.val();
+        var npcType = publicAPI.$npcSelectedType.val();
+        var npcAbility0 = publicAPI.$npcSelectedAbility0.val();
+        var npcAbility1 = publicAPI.$npcSelectedAbility1.val();
+        var npcAbility2 = publicAPI.$npcSelectedAbility2.val();
+
+        console.log(`Testing... NPC Name: ${npcName}, CR: ${npcCR}, Type: ${npcType}, Ability0: ${npcAbility0}, Ability1: ${npcAbility1}, Ability2: ${npcAbility2}`);
+    }
+
+    function handleTypeChange(e){
+        //update the selectedType object
+        publicAPI.$npcSelectedType = $(this);
+        // update the available skills to select based on the new matrix
+        //debug string
+        console.log(`Type changed to ${publicAPI.$npcSelectedType.val()}`);
+        publicAPI.updateAvailableSkillsSelectors();
+    }
+
+    function handleAbilityChange(e){
+        //update the correct selectAbility object
+        switch ($(this).attr("name").slice(-1)){
+            case "0":
+                publicAPI.$npcSelectedAbility0 = $(this);
+                break;
+            case "1":
+                publicAPI.$npcSelectedAbility1 = $(this);
+                break;
+            case "2":
+                publicAPI.$npcSelectedAbility2 = $(this);
+        }
+        // validate the selections for the whole matrix
+        validateAbilityScores($(this));
+        // debug string
+        console.log(`Selected Ability is ${$(this).attr('name')} set to ${$(this).val()}`);
+    }
+
+    function updateAvailableSkillsSelectors(){
+        var currentCR = publicAPI.$npcCRField.val();
+        var currentType = publicAPI.$npcSelectedType.val();
+        var masterSkillCount = 0;
+        var goodSkillCount = 0;
+        var $masterSkillsList = $(`.${masterSkillsID}_list .skill_selector`);
+        var $goodSkillsList = $(`.${goodSkillsID}_list .skill_selector`);
+
+        // This hackey shit can be replaced when I build a better control for the CP selector
+        if(currentCR === "0.33"){
+            currentCR = "third";
+        }
+        else if (currentCR === "0.5"){
+            currentCR = "half";
+        }
+
+        switch(currentType){
+            case "combatant":
+                masterSkillCount = myApp.combantant_stats[currentCR].masterskillcount;
+                goodSkillCount = myApp.combantant_stats[currentCR].goodskillcount;
+                break;
+            case "expert":
+                masterSkillCount = myApp.expert_stats[currentCR].masterskillcount;
+                goodSkillCount = myApp.expert_stats[currentCR].goodskillcount;
+                break;
+            case "spellcaster":
+                masterSkillCount = myApp.spellcaster_stats[currentCR].masterskillcount;
+                goodSkillCount = myApp.spellcaster_stats[currentCR].goodskillcount;
+                break;
+        }
+
+         // Check for existing skill selectors, we just want to add new ones or lop off the last extras
+        // if the current UI is wrong, that way they don't all get reset
+        if( $(".skill_selector").length < 1){
+            // this is the initial call, just add all new selectors
+            addSkillSelectors(masterSkillsID, 0, masterSkillCount);
+            addSkillSelectors(goodSkillsID, 0, goodSkillCount);
+        }
+        else{
+            if($masterSkillsList.length > masterSkillCount){
+                // there are too many master skill selectors for the current settings, remove the extras from the end
+                removeSkillSelectors(masterSkillsID,masterSkillCount);
+            }
+            else if ($masterSkillsList.length < masterSkillCount){
+                // there are not enough master skill selectors for the current settings, add the requied new selectors to the end
+                addSkillSelectors(masterSkillsID, $masterSkillsList.length, masterSkillCount);
+            }
+            if ($goodSkillsList.length > goodSkillCount){
+                // there are too many good skill selectors for the current settings, remove the extras from the end
+                removeSkillSelectors(goodSkillsID, goodSkillCount);
+            }
+            else if ($goodSkillsList.length < goodSkillCount) {
+                addSkillSelectors(goodSkillsID, $goodSkillsList.length, goodSkillCount);
+            }
+        }
+    }
+    function addSkillSelectors(skillType, start, newCount){
+        for(let i = start; i < newCount; i++){
+            let $skillSelector = $(skillsSelectorTemplate);
+            $(".input_group > label", $skillSelector).attr("for", `${skillType}_${i}`);
+            $(".skill_selector", $skillSelector).attr("id", `${skillType}_${i}`);
+            $skillSelector.change(validateSkillSelections);
+            $(`.${skillType}_list`).append($skillSelector);
+        }
+    }
+    function removeSkillSelectors(skillType, newCount){
+        for (let i = $(`.${skillType}_list .skill_selector`).length; i > newCount; i--) {
+            $(`#${skillType}_${i-1}`).parent().remove();
+        }
+    }
+
+    function validateSkillSelections(){
+        // if there are errors clear them here, we'll replace them if they aren't fixed
+        $('#skills_section .validation_error').remove();
+        var $skills = $(".skill_selector");
+        for(let j = 0; j < $skills.length; j++){
+            for(let i = $skills.length - 1; i > j; i--){
+                if( $($skills[j]).val() === $($skills[i]).val()){
+                    // Two skills are the same, fire an error message
+                    console.log("two skills are the same!!!!");
+                    let $error = $(validationErrorTemplate);
+                    let skillType = $skills[j].id.slice(0, $skills[j].id.lastIndexOf("_")); 
+                    $error.attr("id", `${skillType}_error`);
+                    $error.text("You cannot choose the same skill more than once");
+                    $(`.${skillType}_list`).before($error);
+                }
+            }
+        }
+
+    }
+    function validateAbilityScores(newScore){
+        console.log(`validating: newScore.name = ${newScore.attr('name')}`);
+        //var changed = $newscore.attr("name").slice(-1);
+        var rg0 = publicAPI.$npcSelectedAbility0;
+        var rg1 = publicAPI.$npcSelectedAbility1;
+        var rg2 = publicAPI.$npcSelectedAbility2;
+        // figure out which other two radio groups we need to compare to
+        if (newScore.attr("name") === rg0.attr("name")){
+            console.log("Ability 0 just changed...");
+            // if there are errors clear them here, we'll replace them if they aren't fixed
+            $('#ability_scores .validation_error').remove();
+            if(newScore.val() === rg1.val() || newScore.val() === rg2.val()){
+                console.log("it's a dupe!");
+                //set error message 
+                let $error = $(validationErrorTemplate);
+                $error.attr("id", "ability0_error");
+                $error.text("You cannot choose the same ability more than once");
+                $("#ability0_list").before($error);
+            }
+        }
+        else if (newScore.attr("name") === rg1.attr("name")){
+            console.log("Ability 1 just changed...");
+            // if there are errors clear them here, we'll replace them if they aren't fixed
+            $('#ability_scores .validation_error').remove();
+            if (newScore.val() === rg0.val() || newScore.val() === rg2.val()) {
+                console.log("it's a dupe!");
+                //set error message 
+                let $error = $(validationErrorTemplate);
+                $error.attr("id", "ability1_error");
+                $error.text("You cannot choose the same ability more than once");
+                $("#ability1_list").before($error);
+            }
+        }
+        else if (newScore.attr("name") === rg2.attr("name")){
+            console.log("Ability 2 just changed...");
+            // if there are errors clear them here, we'll replace them if they aren't fixed
+            $('#ability_scores .validation_error').remove();
+            if (newScore.val() === rg0.val() || newScore.val() === rg1.val()) {
+                console.log("it's a dupe!");
+                //set error message 
+                let $error = $(validationErrorTemplate);
+                $error.attr("id", "ability2_error");
+                $error.text("You cannot choose the same ability more than once");
+                $("#ability2_list").before($error);
+            }
+        }
+    }
+
 }
 
 function setupMobGenerator(){
