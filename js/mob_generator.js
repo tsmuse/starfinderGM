@@ -12,11 +12,11 @@ var Helpers = {
 
             var min = Math.ceil(1);
             var max = Math.floor(type);
-            var result = 0;
+            var result = [];
             for (let i = 0; i < count; i++) {
                 let roll = Math.floor(Math.random() * (max - min + 1)) + min;
                 console.log(`Roll: ${roll}`);
-                result += roll;
+                result.push(roll);
                 //result += Math.floor(Math.random() * (max - min + 1)) + min;
             }
             return result;
@@ -61,6 +61,7 @@ function setupUI(myApp){
     const creatureBlockTemplate = `<div class='creature_block'><h2 class='creature_name'></h2><p class="creature_cr"></p><h3>Ability modifiers</h3><table class='creature_abilities'><thead><tr><th class="label js_str_entry">Strength</th><th class="label js_dex_entry">Dexterity</th><th class="label js_con_entry">Constitution</th><th class="label js_int_entry">Intelligence</th><th class="label js_wis_entry">Wisdom</th><th class="label js_cha_entry">Charisma</th></tr></thead><tbody><tr><td class="value js_str_value"></td><td class="value js_dex_value"></td><td class="value js_con_value"></td><td class="value js_int_value"></td><td class="value js_wis_value"></td><td class="value js_cha_value"></td></tr></tbody></table><h3>Defensive stats</h3><table class="creature_defense"><thead><tr><th class="label js_initive_entry">Initive</th><th class="label js_kac_entry">KAC</th><th class="label js_eac_entry">EAC</th></tr></thead><tbody><tr><td class="value js_initive_value"></td><td class="value js_kac_value"></td><td class="value js_eac_value"></td></tr></tbody></table><h3>Offensive stats</h3><table class="creature_offense"><thead><tr><th class="label js_hattack_entry">High Attack</th><th class="label js_lattack_entry">Low Attack</th><th class="label js_edmg_entry">Base Energy Damage</th><th class="label js_kdmg_entry">Base Kinetic Damage</th><th class="label js_mdmg_entry">Base Melee Damage</th><th class="label js_3mdmg_entry hidden">3 Melee Attacks Damage</th><th class="label js_4mdmg_entry hidden">4 Melee Attacks Damage</th></tr></thead><tbody><tr><td class="value js_hattack_value"></td><td class="value js_lattack_value"></td><td class="value js_edmg_value"></td><td class="value js_kdmg_value"></td><td class="value js_mdmg_value"></td><td class="value js_3mdmg_value hidden"></td><td class="value js_4mdmg_value hidden"></td></tr><tr><td class="action js_hattack_action"><button class="roll_button js_roll_hattack">Roll</button></td><td class="action js_lattack_action"><button class="roll_button js_roll_lattack">Roll</button></td><td class="action js_edmg_action"><button class="roll_button js_roll_edmg">Roll</button></td><td class="action js_kdmg_action"><button class="roll_button js_roll_kdmg">Roll</button></td><td class="action js_mdmg_action"><button class="roll_button js_roll_mdmg">Roll</button></td><td class="action js_3mdmg_action hidden"><button class="roll_button js_roll_3mdmg">Roll</button></td><td class="action js_4mdmg_action hidden"><button class="roll_button js_roll_4mdmg">Roll</button></td></tr></tbody></table><h3>Weapons</h3><table class="creature_weapons"><tbody></tbody></table><h3>Skills</h3><table class="creature_skills"><tbody></tbody></table><h3>Special abilities/class features</h3><table class="creature_sas"><tbody></tbody></table><div class="roll_results"></div></div>`;
     const skillsSelectorTemplate = "<li class='input_group'><label></label><select class='skill_selector'><option>Acrobatics</option><option>Athletics</option><option>Bluff</option><option>Computers</option><option>Culture</option><option>Diplomacy</option><option>Disguise</option><option>Engineering</option><option>Intimidate</option><option>Life Science</option><option>Medicine</option><option>Mysticism</option><option>Perception</option><option>Physical Science</option><option>Piloting</option><option>Profession</option><option>Sense Motive</option><option>Sleight of Hand</option><option>Stealth</option><option>Survival</option></select></li>";
     const validationErrorTemplate = "<p class='validation_error'></p>";
+    const rollReportTemplate = `<div class="dice_roll"><p class="result"></p><p class="report"></p></div>`;
     const goodSkillsID = "good_skill";
     const masterSkillsID = "master_skill";
 
@@ -96,6 +97,7 @@ function setupUI(myApp){
         $npcSelectedAbility0,
         $npcSelectedAbility1,
         $npcSelectedAbility2,
+        $statblocs
     };
 
     
@@ -311,32 +313,32 @@ function setupUI(myApp){
     function displayStatBlock(npc){
         var $statbloc = $(creatureBlockTemplate);
         var creature_id_class = `js_creature_${$statblocs.length}`;
-        $(".creature_block", $statbloc).addClass(creature_id_class);
+        $statbloc.addClass(creature_id_class);
         $(`.creature_name`, $statbloc).text(npc.name);
         $(`.creature_cr`, $statbloc).text(npc.cr);
         // fill in the abilities table
-        $(`.js_str_value`, $statbloc).text(npc.str);
-        $(`.js_dex_value`, $statbloc).text(npc.dex);
-        $(`.js_con_value`, $statbloc).text(npc.con);
-        $(`.js_int_value`, $statbloc).text(npc.int);
-        $(`.js_wis_value`, $statbloc).text(npc.wis);
-        $(`.js_cha_value`, $statbloc).text(npc.cha);
+        $(`.js_str_value`, $statbloc).text(`+${npc.str}`);
+        $(`.js_dex_value`, $statbloc).text(`+${npc.dex}`);
+        $(`.js_con_value`, $statbloc).text(`+${npc.con}`);
+        $(`.js_int_value`, $statbloc).text(`+${npc.int}`);
+        $(`.js_wis_value`, $statbloc).text(`+${npc.wis}`);
+        $(`.js_cha_value`, $statbloc).text(`+${npc.cha}`);
         // fill in the defense table
-        $(`.js_initive_value`, $statbloc).text(npc.initive);
-        $(`.js_kac_value`, $statbloc).text(npc.kac);
-        $(`.js_eac_value`, $statbloc).text(npc.eac);
+        $(`.js_initive_value`, $statbloc).text(`+${npc.initive}`);
+        $(`.js_kac_value`, $statbloc).text(`+${npc.kac}`);
+        $(`.js_eac_value`, $statbloc).text(`+${npc.eac}`);
         // fill in the offense table
-        $(`.js_hattack_value`, $statbloc).text(npc.highattack);
-        // need to replace the button functions with real functions that actually output the results
-        $(`.js_roll_hattack`, $statbloc).click(handleRollBaseAttack);
-        $(`.js_lattack_value`, $statbloc).text(npc.lowattack);
-        $(`.js_roll_lattack`, $statbloc).click(handleRollBaseAttack);
+        $(`.js_hattack_value`, $statbloc).text(`+${npc.highattack}`);
+        $(`.js_roll_hattack`, $statbloc).click(handleRollBasicHighAttack);
+        $(`.js_lattack_value`, $statbloc).text(`+${npc.lowattack}`);
+        $(`.js_roll_lattack`, $statbloc).click(handleRollBasicLowAttack);
         $(`.js_edmg_value`, $statbloc).text(npc.defaultenergydmg);
-        $(`.js_roll_edmg`, $statbloc).click(handleRollBaseDamage);
+        $(`.js_roll_edmg`, $statbloc).click(handleRollBasicEnergyDmg);
         $(`.js_kdmg_value`, $statbloc).text(npc.defaultkineticdmg);
-        $(`.js_roll_kdmg`, $statbloc).click(handleRollBaseDamage);
+        $(`.js_roll_kdmg`, $statbloc).click(handleRollBasicKineticDmg);
         $(`.js_mdmg_value`, $statbloc).text(npc.defautmeleedmg);
-        $(`.js_roll_mdmg`, $statbloc).click(handleRollBaseDamage);
+        $(`.js_roll_mdmg`, $statbloc).click(handleRollBasicMeleeDmg);
+        
         // check if the npc has three melee attacks
         if(npc.defaultmeleethreedmg != ""){
             // add the entries for the three attacks damage to the table
@@ -344,7 +346,7 @@ function setupUI(myApp){
             $(`.js_3mdmg_value`, $statbloc).removeClass("hidden");
             $(`.js_3mdmg_action`, $statbloc).removeClass("hidden");
             $(`.js_3mdmg_value`, $statbloc).text(npc.defaultmeleethreedmg);
-            $(`.js_roll_3mdmg`, $statbloc).click(handleRollBaseDamage);
+            $(`.js_roll_3mdmg`, $statbloc).click(handleRollBasicThreeMeleeDmg);
         }
         if (npc.defaultmeleefourdmg != "") {
             // add the entries for the four attacks damage to the table
@@ -352,7 +354,7 @@ function setupUI(myApp){
             $(`.js_4mdmg_value`, $statbloc).removeClass("hidden");
             $(`.js_4mdmg_action`, $statbloc).removeClass("hidden");
             $(`.js_4mdmg_value`, $statbloc).text(npc.defaultmeleefourdmg);
-            $(`.js_roll_4mdmg`, $statbloc).click(handleRollBaseDamage);
+            $(`.js_roll_4mdmg`, $statbloc).click(handleRollBasicFourMeleeDmg);
         }
         // fill in the skills table
         for(let i = 0; i < npc.skills.length; i++){
@@ -364,20 +366,79 @@ function setupUI(myApp){
         $(".statblocs_section").append($statbloc);
     }
 
-    function handleRollBaseAttack(e){
-        // need to figure out the parent statblock and look at it's class to get the id of the appropriate card
-        // then I can ask the App for the npc object again to access it's roll function
-        //npc.rollBasicAttack("high")
-        //npc.rollBasicAttack("low")
+    function handleRollBasicHighAttack(e){
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicAttack("high");
+        displayRollResult(npcID, roll, "Basic High Attack");
     }
 
-    function handleRollBaseDamage(e){
-        //npc.rollBasicDamage("energy")
-        //npc.rollBasicDamage("kinetic")
-        //npc.rollBasicDamage("melee")
-        //npc.rollBasicDamage("threemelee")
-        //npc.rollBasicDamage("fourmelee")
+    function handleRollBasicLowAttack(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicAttack("low");
+        displayRollResult(npcID, roll, "Basic Low Attack");
+    }
 
+    function handleRollBasicEnergyDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("energy");
+        displayRollResult(npcID, roll, "Basic Energy DMG");
+    }
+
+    function handleRollBasicKineticDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("kinetic");
+        displayRollResult(npcID, roll, "Basic Kinetic DMG");
+    }
+
+    function handleRollBasicMeleeDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("melee");
+        displayRollResult(npcID, roll, "Basic Melee DMG");
+    }
+
+    function handleRollBasicThreeMeleeDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("threemelee");
+        displayRollResult(npcID, roll, "Basic Three Melee DMG");
+    }
+
+    function handleRollBasicFourMeleeDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("fourmelee");
+        displayRollResult(npcID, roll, "Basic Four Melee DMG");
+    }
+
+    function findMyCreatureBlockID(node){
+        var search = node.parents();
+        var $parent;
+        for(let i = 0; i < search.length; i++){
+            if($(search[i]).hasClass(`creature_block`)){
+                $parent = $(search[i]);
+                break;
+            }
+        }
+        for(let i = 0; i < publicAPI.$statblocs.length;i++){
+            if($parent[0] === publicAPI.$statblocs[i][0]){
+                return i;
+            }
+        }
+        return undefined;
+    }
+    function displayRollResult(npcID, roll, label){
+        var $activity = $(rollReportTemplate);
+        $("p.result", $activity).text(`${label}: ${roll.result}`);
+        $("p.report", $activity).text(roll.report);
+        if ($(`div.js_creature_${npcID} .dice_roll`).length > 0) {
+            $(`div.js_creature_${npcID} .dice_roll`).remove();
+        }
+        $(`div.js_creature_${npcID} .roll_results`).append($activity);
     }
 }
 
@@ -385,7 +446,7 @@ function setupMobGenerator(){
     var combatant_stats;
     var expert_stats;
     var spellcaster_stats;
-    var npcs = {};
+    var npcs = [];
     var publicAPI = {
         npcs,
         combatant_stats,
@@ -524,33 +585,73 @@ function setupMobGenerator(){
 
         // generates a random die roll based on the damage dice in the mob entry and addes the appropriate modifiers
         function rollDamage(damageType) {
+            var damagedice;
+            var damagemod;
             switch (damageType) {
                 case "energy":
-                    return !isNaN(cr) ? Helpers.rolldice(mob.defaultenergydmg) + Number(cr) : Helpers.rolldice(mob.defaultenergydmg);
+                    damagedice = mob.defaultenergydmg;
+                    damagemod = 0;
+                    break;
                 case "kinetic":
-                    return !isNaN(cr) ? Helpers.rolldice(mob.defaultkineticdmg) + Number(cr) : Helpers.rolldice(mob.defaultkineticdmg);
+                    damagedice = mob.defaultkineticdmg;
+                    damagemod = 0;
+                    break;
                 case "melee":
-                    return !isNaN(cr) ? Helpers.rolldice(mob.defautmeleedmg) + Number(cr) + mob.str : Helpers.rolldice(mob.defautmeleedmg) + mob.str;
+                    damagedice = mob.defautmeleedmg;
+                    damagemod = mob.str;
+                    break;
                 case "threemelee":
-                    return !isNaN(cr) ? Helpers.rolldice(mob.defaultmeleethreedmg) + Number(cr) + mob.str : Helpers.rolldice(mob.defaultmeleethreedmg) + mob.str;
+                    damagedice = mob.defaultmeleethreedmg;
+                    damagemod = mob.str;
+                    break;
                 case "fourmelee":
-                    return !isNaN(cr) ? Helpers.rolldice(mob.defaultmeleefourdmg) + Number(cr) + mob.str : Helpers.rolldice(mob.defaultmeleefourdmg) + mob.str;
+                    damagedice = mob.defaultmeleefourdmg;
+                    damagemod = mob.str;
             }
+            var crToAdd = !isNaN(cr) ? Number(cr) : 0;
+            var rolls = Helpers.rolldice(damagedice);
+            var die = damagedice.slice(damagedice.indexOf("d"));
+            var damage = 0;
+            var report = "[";
+
+            for (let i = 0; i < rolls.length; i++) {
+                damage += rolls[i] + crToAdd + damagemod;
+                report += ` ${rolls[i]} on ${die} `;
+            }
+            report += "]";
+            return {"result":damage, report};
         }
 
         function rollAttack(attackType) {
+            var attackbonus;
             switch (attackType) {
                 case "high":
-                    return Helpers.rolldice("1d20") + mob.highattack;
+                    attackbonus = mob.highattack;
+                    break;
                 case "low":
-                    return Helpers.rolldice("1d20") + mob.lowattack;
+                    attackbonus = mob.lowattack;
             }
+            var roll = Helpers.rolldice("1d20")[0];
+            var attack = roll + attackbonus;
+            if(roll === 20){
+                var report = "[ POTENTIAL CRITICAL! ]";
+            }
+            else{
+                var report = `[ ${roll} on 1d20 ]`;
+            }
+            return {"result":attack, report};
+            
+
         }
 
         function rollSkill(skillnumber){
-            return Helpers.rolldice("1d20") + mob.skills[skillnumber].modifier;
+            var roll = Helpers.rolldice("1d20")[0];
+            var result = roll + mob.skills[skillnumber].modifier;
+            var report = `[ ${roll} on 1d20 ]`;
+            return {result, report};
         }
-        npcs[mob.id] = mob;
+
+        npcs.push(mob);
         return mob;
     } 
 }
