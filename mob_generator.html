@@ -2,254 +2,307 @@
 <html>
     <head>
         <title>Mob generator</title>
+        <link href="https://fonts.googleapis.com/css?family=Oswald:400,600|PT+Sans" rel="stylesheet">
         <link rel="stylesheet" href="css/mob_generator.css">
     </head>
     <body>
-        <section class="creation_form">
-            <h1>1. Create a basic NPC</h1>
-            <section id="basic_info">
-                <div class="input_group">
-                    <label for="npc_name">Name/type for NPC</label>
-                    <input type="text" id="npc_name">
-                </div>
-                <div class="input_group">
-                    <!-- Need a better control than this. Need to build a better level picker -->
-                    <label for="npc_cr">CR for NPC</label>
-                    <input type="number" id="npc_cr">
-                </div>
-                <div class="input_group">
-                    <h2 class="form_instruction">NPC type</h2>
-                    <ul class="radio_choice_list">
-                        <li>
-                            <label for="npc_type_combatant">Combatant</label>
-                            <input type="radio" name="npc_type" id="npc_type_combatant" value="combatant">
-                        </li>
-                        <li>
-                            <label for="npc_type_expert">Expert</label>
-                            <input type="radio" name="npc_type" id="npc_type_expert" value="expert">
-                        </li>
-                        <li>
-                            <label for="npc_type_spellcaster">Spellcaster</label>
-                            <input type="radio" name="npc_type" id="npc_type_spellcaster" value="spellcaster">
-                        </li>
-                    </ul>
-                </div>
-                </div>
-            </section>
-            <section class="ability_scores_section">
-                <div class="input_group">
-                    <h2 class="form_instruction">Highest ability score modifier</h2>
-                    <ul class="radio_choice_list js_npc_ability0_list">
-                        <li>
-                            <label for="npc_ability0_str">Strength</label>
-                            <input type="radio" name="npc_ability0" id="npc_ability0_str" value="str">
-                        </li>
-                        <li>
-                            <label for="npc_ability0_str">Dexterity</label>
-                            <input type="radio" name="npc_ability0" id="npc_ability0_dex" value="dex">
-                        </li>
-                        <li>
-                            <label for="npc_ability0_str">Constitution</label>
-                            <input type="radio" name="npc_ability0" id="npc_ability0_con" value="con">
-                        </li>
-                        <li>
-                            <label for="npc_ability0_str">Intelligence</label>
-                            <input type="radio" name="npc_ability0" id="npc_ability0_int" value="int">
-                        </li>
-                        <li>
-                            <label for="npc_ability0_str">Wisdom</label>
-                            <input type="radio" name="npc_ability0" id="npc_ability0_wis" value="wis">
-                        </li>
-                        <li>
-                            <label for="npc_ability0_str">Charisma</label>
-                            <input type="radio" name="npc_ability0" id="npc_ability0_cha" value="cha">
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="input_group">
-                <h2 class="form_instruction">Second highest ability score modifier</h2>
-                <ul class="radio_choice_list js_npc_ability1_list">
-                    <li>
-                        <label for="npc_ability1_str">Strength</label>
-                        <input type="radio" name="npc_ability1" id="npc_ability1_str" value="str">
-                    </li>
-                    <li>
-                        <label for="npc_ability1_str">Dexterity</label>
-                        <input type="radio" name="npc_ability1" id="npc_ability1_dex" value="dex">
-                    </li>
-                    <li>
-                        <label for="npc_ability1_str">Constitution</label>
-                        <input type="radio" name="npc_ability1" id="npc_ability1_con" value="con">
-                    </li>
-                    <li>
-                        <label for="npc_ability1_str">Intelligence</label>
-                        <input type="radio" name="npc_ability1" id="npc_ability1_int" value="int">
-                    </li>
-                    <li>
-                        <label for="npc_ability1_str">Wisdom</label>
-                        <input type="radio" name="npc_ability1" id="npc_ability1_wis" value="wis">
-                    </li>
-                    <li>
-                        <label for="npc_ability1_str">Charisma</label>
-                        <input type="radio" name="npc_ability1" id="npc_ability1_cha" value="cha">
-                    </li>
-                </ul>
-            </div>
-            <div class="input_group">
-                <h2 class="form_instruction">Third highest ability score modifier</h2>
-                <ul class="radio_choice_list js_npc_ability2_list">
-                    <li>
-                        <label for="npc_ability2_str">Strength</label>
-                        <input type="radio" name="npc_ability2" id="npc_ability2_str" value="str">
-                    </li>
-                    <li>
-                        <label for="npc_ability2_str">Dexterity</label>
-                        <input type="radio" name="npc_ability2" id="npc_ability2_dex" value="dex">
-                    </li>
-                    <li>
-                        <label for="npc_ability2_str">Constitution</label>
-                        <input type="radio" name="npc_ability2" id="npc_ability2_con" value="con">
-                    </li>
-                    <li>
-                        <label for="npc_ability2_str">Intelligence</label>
-                        <input type="radio" name="npc_ability2" id="npc_ability2_int" value="int">
-                    </li>
-                    <li>
-                        <label for="npc_ability2_str">Wisdom</label>
-                        <input type="radio" name="npc_ability2" id="npc_ability2_wis" value="wis">
-                    </li>
-                    <li>
-                        <label for="npc_ability2_str">Charisma</label>
-                        <input type="radio" name="npc_ability2" id="npc_ability2_cha" value="cha">
-                    </li>
-                </ul>
-            </div>
+        <div class="flex_container">
+            <section class="creation_form">
+                <h1>1. Create a basic NPC</h1>
+                <section class="basic_info">
+                    <div class="input_group">
+                        <label class="form_instruction" for="npc_name">Name/type for NPC</label>
+                        <input type="text" id="npc_name">
+                    </div>
+                    <div class="input_group">
+                        <!-- Need a better control than this. Need to build a better level picker -->
+                        <label class="form_instruction" for="npc_cr">CR for NPC</label>
+                        <div class="fancy_select">
+                            <select id="npc_cr">
+                                <option value="third" selected>1/3</option>
+                                <option value="half">1/2</option>
+                                <option>1</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input_group npc_type_group">
+                        <h2 class="form_instruction">NPC type</h2>
+                        <ul class="radio_choice_list">
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_type" id="npc_type_combatant" value="combatant">
+                                    <label for="npc_type_combatant">Combatant</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_type" id="npc_type_expert" value="expert">
+                                    <label for="npc_type_expert">Expert</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_type" id="npc_type_spellcaster" value="spellcaster">
+                                    <label for="npc_type_spellcaster">Spellcaster</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="ability_scores_section">
+                    <div class="input_group">
+                        <h2 class="form_instruction">Highest ability score modifier</h2>
+                        <ul class="radio_choice_list js_npc_ability0_list">
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability0" id="npc_ability0_str" value="str">
+                                    <label for="npc_ability0_str">Strength</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability0" id="npc_ability0_dex" value="dex">
+                                    <label for="npc_ability0_dex">Dexterity</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability0" id="npc_ability0_con" value="con">
+                                    <label for="npc_ability0_con">Constitution</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability0" id="npc_ability0_int" value="int">
+                                    <label for="npc_ability0_int">Intelligence</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability0" id="npc_ability0_wis" value="wis">
+                                    <label for="npc_ability0_wis">Wisdom</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability0" id="npc_ability0_cha" value="cha">
+                                    <label for="npc_ability0_cha">Charisma</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="input_group">
+                        <h2 class="form_instruction">Second highest ability score modifier</h2>
+                        <ul class="radio_choice_list js_npc_ability1_list">
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability1" id="npc_ability1_str" value="str">
+                                    <label for="npc_ability1_str">Strength</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability1" id="npc_ability1_dex" value="dex">
+                                    <label for="npc_ability1_dex">Dexterity</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability1" id="npc_ability1_con" value="con">
+                                    <label for="npc_ability1_con">Constitution</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability1" id="npc_ability1_int" value="int">
+                                    <label for="npc_ability1_int">Intelligence</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability1" id="npc_ability1_wis" value="wis">
+                                    <label for="npc_ability1_wis">Wisdom</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability1" id="npc_ability1_cha" value="cha">
+                                    <label for="npc_ability1_cha">Charisma</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="input_group">
+                        <h2 class="form_instruction">Third highest ability score modifier</h2>
+                        <ul class="radio_choice_list js_npc_ability2_list">
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability2" id="npc_ability2_str" value="str">
+                                    <label for="npc_ability2_str">Strength</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability2" id="npc_ability2_dex" value="dex">
+                                    <label for="npc_ability2_dex">Dexterity</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability2" id="npc_ability2_con" value="con">
+                                    <label for="npc_ability2_con">Constitution</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability2" id="npc_ability2_int" value="int">
+                                    <label for="npc_ability2_int">Intelligence</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability2" id="npc_ability2_wis" value="wis">
+                                    <label for="npc_ability2_wis">Wisdom</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="radio-button">
+                                    <input type="radio" name="npc_ability2" id="npc_ability2_cha" value="cha">
+                                    <label for="npc_ability2_cha">Charisma</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="skills_section">
+                    <div class="master_skills">
+                        <h2 class="form_instruction">Master skills</h2>
+                        <ul class="master_skill_list"></ul>
+                    </div>
+                    <div class="good_skills">
+                        <h2 class="form_instruction">Good Skills</h2>
+                        <ul class="good_skill_list"></ul>
+                    </div>
+                </section>
+                <section class="submit_section">
+                    <div class="input_group">
+                        <button class="submit_button">Roll NPC</button>
+                    </div>
+                </section>      
         </section>
-        <section class="skills_section">
-            <h2>Master skills</h2>
-            <ul class="master_skill_list">
-            </ul>
-            <h2>Good Skills</h2>
-            <ul class="good_skill_list">
-            </ul>
+        <section class="statblocs_section">
+            <!-- TEMPLATE HERE FOR EASIER DEV. REMOVE AFTER FINISHED -->
+            <!-- <div class='creature_block'>
+                <h2 class='creature_name'></h2>
+                <p class="creature_cr"></p>
+                <h3>Ability modifiers</h3>
+                <table class='creature_abilities'>
+                    <thead>
+                        <tr>
+                            <th class="label js_str_entry">Strength</th>
+                            <th class="label js_dex_entry">Dexterity</th>
+                            <th class="label js_con_entry">Constitution</th>
+                            <th class="label js_int_entry">Intelligence</th>
+                            <th class="label js_wis_entry">Wisdom</th>
+                            <th class="label js_cha_entry">Charisma</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="value js_str_value"></td>
+                            <td class="value js_dex_value"></td>
+                            <td class="value js_con_value"></td>
+                            <td class="value js_int_value"></td>
+                            <td class="value js_wis_value"></td>
+                            <td class="value js_cha_value"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Defensive stats</h3>
+                <table class="creature_defense">
+                    <thead>
+                        <tr>
+                            <th class="label js_initive_entry">Initive</th>
+                            <th class="label js_kac_entry">KAC</th>
+                            <th class="label js_eac_entry">EAC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="value js_initive_value"></td>
+                            <td class="value js_kac_value"></td>
+                            <td class="value js_eac_value"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Offensive stats</h3>
+                <table class="creature_offense">
+                    <thead>
+                        <tr>
+                            <th class="label js_hattack_entry">High Attack</th>
+                            <th class="label js_lattack_entry">Low Attack</th>
+                            <th class="label js_edmg_entry">Base Energy Damage</th>
+                            <th class="label js_kdmg_entry">Base Kinetic Damage</th>
+                            <th class="label js_mdmg_entry">Base Melee Damage</th>
+                            <th class="label js_3mdmg_entry hidden">3 Melee Attacks Damage</th>
+                            <th class="label js_4mdmg_entry hidden">4 Melee Attacks Damage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="value js_hattack_value"></td>
+                            <td class="value js_lattack_value"></td>
+                            <td class="value js_edmg_value"></td>
+                            <td class="value js_kdmg_value"></td>
+                            <td class="value js_mdmg_value"></td>
+                            <td class="value js_3mdmg_value hidden"></td>
+                            <td class="value js_4mdmg_value hidden"></td>
+                        </tr>
+                        <tr>
+                            <td class="action js_hattack_action"><button class="roll_button js_roll_hattack">Roll</button></td>
+                            <td class="action js_lattack_action"><button class="roll_button js_roll_lattack">Roll</button></td>
+                            <td class="action js_edmg_action"><button class="roll_button js_roll_edmg">Roll</button></td>
+                            <td class="action js_kdmg_action"><button class="roll_button js_roll_kdmg">Roll</button></td>
+                            <td class="action js_mdmg_action"><button class="roll_button js_roll_mdmg">Roll</button></td>
+                            <td class="action js_3mdmg_action hidden"><button class="roll_button js_roll_3mdmg">Roll</button></td>
+                            <td class="action js_4mdmg_action hidden"><button class="roll_button js_roll_4mdmg">Roll</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Weapons</h3>
+                <table class="creature_weapons">
+                    <tbody>
+                        <tr>
+                            <td class="label weapon_${weaponname}"></td>
+                            <td class="value weapon_${weaponname}_atk"></td>
+                            <td class="value weapon_${weaponname}_dmg"></td>
+                            <td class="value weapon_${weaponname}_specials"></td>
+                            <td class="value weapon_${weaponname}_actions">
+                                <button class="roll_hattack_button weapon_${weaponname}_hatk">Roll High Attack</button>
+                                <button class="roll_lattack_button weapon_${weaponname}_hatk">Roll Low Attack</button>
+                                <button class="roll_dmg_button weapon_${weaponname}_dmg">Roll Damage</button>
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
+                <h3>Skills</h3>
+                <table class="creature_skills">
+                    <tbody>
+                    </tbody>
+                </table>
+                <h3>Special abilities/class features</h3>
+                <table class="creature_sas">
+                    <tbody>
+                        <tr>
+                            <td class="label sa_${saname}"></td> 
+                            <td class="label sa_${saname}_desc"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="roll_results"></div>
+            </div> -->
         </section>
-            <div class="input_group">
-                <button class="submit_button">Roll character</button>
-            </div>
-    </section>
-    <section class="statblocs_section">
-        <!-- TEMPLATE HERE FOR EASIER DEV. REMOVE AFTER FINISHED -->
-        <!-- <div class='creature_block'>
-            <h2 class='creature_name'></h2>
-            <p class="creature_cr"></p>
-            <h3>Ability modifiers</h3>
-            <table class='creature_abilities'>
-                <thead>
-                    <tr>
-                        <th class="label js_str_entry">Strength</th>
-                        <th class="label js_dex_entry">Dexterity</th>
-                        <th class="label js_con_entry">Constitution</th>
-                        <th class="label js_int_entry">Intelligence</th>
-                        <th class="label js_wis_entry">Wisdom</th>
-                        <th class="label js_cha_entry">Charisma</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="value js_str_value"></td>
-                        <td class="value js_dex_value"></td>
-                        <td class="value js_con_value"></td>
-                        <td class="value js_int_value"></td>
-                        <td class="value js_wis_value"></td>
-                        <td class="value js_cha_value"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <h3>Defensive stats</h3>
-            <table class="creature_defense">
-                <thead>
-                    <tr>
-                        <th class="label js_initive_entry">Initive</th>
-                        <th class="label js_kac_entry">KAC</th>
-                        <th class="label js_eac_entry">EAC</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="value js_initive_value"></td>
-                        <td class="value js_kac_value"></td>
-                        <td class="value js_eac_value"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <h3>Offensive stats</h3>
-            <table class="creature_offense">
-                <thead>
-                    <tr>
-                        <th class="label js_hattack_entry">High Attack</th>
-                        <th class="label js_lattack_entry">Low Attack</th>
-                        <th class="label js_edmg_entry">Base Energy Damage</th>
-                        <th class="label js_kdmg_entry">Base Kinetic Damage</th>
-                        <th class="label js_mdmg_entry">Base Melee Damage</th>
-                        <th class="label js_3mdmg_entry hidden">3 Melee Attacks Damage</th>
-                        <th class="label js_4mdmg_entry hidden">4 Melee Attacks Damage</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="value js_hattack_value"></td>
-                        <td class="value js_lattack_value"></td>
-                        <td class="value js_edmg_value"></td>
-                        <td class="value js_kdmg_value"></td>
-                        <td class="value js_mdmg_value"></td>
-                        <td class="value js_3mdmg_value hidden"></td>
-                        <td class="value js_4mdmg_value hidden"></td>
-                    </tr>
-                    <tr>
-                        <td class="action js_hattack_action"><button class="roll_button js_roll_hattack">Roll</button></td>
-                        <td class="action js_lattack_action"><button class="roll_button js_roll_lattack">Roll</button></td>
-                        <td class="action js_edmg_action"><button class="roll_button js_roll_edmg">Roll</button></td>
-                        <td class="action js_kdmg_action"><button class="roll_button js_roll_kdmg">Roll</button></td>
-                        <td class="action js_mdmg_action"><button class="roll_button js_roll_mdmg">Roll</button></td>
-                        <td class="action js_3mdmg_action hidden"><button class="roll_button js_roll_3mdmg">Roll</button></td>
-                        <td class="action js_4mdmg_action hidden"><button class="roll_button js_roll_4mdmg">Roll</button></td>
-                    </tr>
-                </tbody>
-            </table>
-            <h3>Weapons</h3>
-            <table class="creature_weapons">
-                <tbody>
-                    <tr>
-                        <td class="label weapon_${weaponname}"></td>
-                        <td class="value weapon_${weaponname}_atk"></td>
-                        <td class="value weapon_${weaponname}_dmg"></td>
-                        <td class="value weapon_${weaponname}_specials"></td>
-                        <td class="value weapon_${weaponname}_actions">
-                            <button class="roll_hattack_button weapon_${weaponname}_hatk">Roll High Attack</button>
-                            <button class="roll_lattack_button weapon_${weaponname}_hatk">Roll Low Attack</button>
-                            <button class="roll_dmg_button weapon_${weaponname}_dmg">Roll Damage</button>
-                        </td>
-                    </tr> 
-                </tbody>
-            </table>
-            <h3>Skills</h3>
-            <table class="creature_skills">
-                <tbody>
-                </tbody>
-            </table>
-            <h3>Special abilities/class features</h3>
-            <table class="creature_sas">
-                <tbody>
-                    <tr>
-                        <td class="label sa_${saname}"></td> 
-                        <td class="label sa_${saname}_desc"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="roll_results"></div>
-        </div> -->
-    </section>
+        </div
         <!-- Only loading JQuery for the GUI stuff, because it's faster to prototype right now
              will eventually rip this out and port it all to React or Angular. The "app" itself 
              doesn't and shouldn't use any JQuery because it will be removed in the future

@@ -57,9 +57,13 @@ Helpers.loadStats("js/json/combatant_array.json",function loadCombatantTable(res
 });
 
 // ***************************
+
+// The UI application
 function setupUI(myApp){
-    const creatureBlockTemplate = `<div class='creature_block'><h2 class='creature_name'></h2><p class="creature_cr"></p><h3>Ability modifiers</h3><table class='creature_abilities'><thead><tr><th class="label js_str_entry">Strength</th><th class="label js_dex_entry">Dexterity</th><th class="label js_con_entry">Constitution</th><th class="label js_int_entry">Intelligence</th><th class="label js_wis_entry">Wisdom</th><th class="label js_cha_entry">Charisma</th></tr></thead><tbody><tr><td class="value js_str_value"></td><td class="value js_dex_value"></td><td class="value js_con_value"></td><td class="value js_int_value"></td><td class="value js_wis_value"></td><td class="value js_cha_value"></td></tr></tbody></table><h3>Defensive stats</h3><table class="creature_defense"><thead><tr><th class="label js_initive_entry">Initive</th><th class="label js_kac_entry">KAC</th><th class="label js_eac_entry">EAC</th></tr></thead><tbody><tr><td class="value js_initive_value"></td><td class="value js_kac_value"></td><td class="value js_eac_value"></td></tr></tbody></table><h3>Offensive stats</h3><table class="creature_offense"><thead><tr><th class="label js_hattack_entry">High Attack</th><th class="label js_lattack_entry">Low Attack</th><th class="label js_edmg_entry">Base Energy Damage</th><th class="label js_kdmg_entry">Base Kinetic Damage</th><th class="label js_mdmg_entry">Base Melee Damage</th><th class="label js_3mdmg_entry hidden">3 Melee Attacks Damage</th><th class="label js_4mdmg_entry hidden">4 Melee Attacks Damage</th></tr></thead><tbody><tr><td class="value js_hattack_value"></td><td class="value js_lattack_value"></td><td class="value js_edmg_value"></td><td class="value js_kdmg_value"></td><td class="value js_mdmg_value"></td><td class="value js_3mdmg_value hidden"></td><td class="value js_4mdmg_value hidden"></td></tr><tr><td class="action js_hattack_action"><button class="roll_button js_roll_hattack">Roll</button></td><td class="action js_lattack_action"><button class="roll_button js_roll_lattack">Roll</button></td><td class="action js_edmg_action"><button class="roll_button js_roll_edmg">Roll</button></td><td class="action js_kdmg_action"><button class="roll_button js_roll_kdmg">Roll</button></td><td class="action js_mdmg_action"><button class="roll_button js_roll_mdmg">Roll</button></td><td class="action js_3mdmg_action hidden"><button class="roll_button js_roll_3mdmg">Roll</button></td><td class="action js_4mdmg_action hidden"><button class="roll_button js_roll_4mdmg">Roll</button></td></tr></tbody></table><h3>Weapons</h3><table class="creature_weapons"><tbody></tbody></table><h3>Skills</h3><table class="creature_skills"><tbody></tbody></table><h3>Special abilities/class features</h3><table class="creature_sas"><tbody></tbody></table><div class="roll_results"></div></div>`;
-    const skillsSelectorTemplate = "<li class='input_group'><label></label><select class='skill_selector'><option>Acrobatics</option><option>Athletics</option><option>Bluff</option><option>Computers</option><option>Culture</option><option>Diplomacy</option><option>Disguise</option><option>Engineering</option><option>Intimidate</option><option>Life Science</option><option>Medicine</option><option>Mysticism</option><option>Perception</option><option>Physical Science</option><option>Piloting</option><option>Profession</option><option>Sense Motive</option><option>Sleight of Hand</option><option>Stealth</option><option>Survival</option></select></li>";
+
+    // templates used by various parts of the UI app
+    const creatureBlockTemplate = `<div class='creature_block'><h2 class='creature_name'></h2><p class="creature_cr"></p><h3 class="form_instruction">Ability modifiers</h3><table class='creature_abilities'><thead><tr><th class="label js_str_entry">Strength</th><th class="label js_dex_entry">Dexterity</th><th class="label js_con_entry">Constitution</th><th class="label js_int_entry">Intelligence</th><th class="label js_wis_entry">Wisdom</th><th class="label js_cha_entry">Charisma</th></tr></thead><tbody><tr><td class="value js_str_value"></td><td class="value js_dex_value"></td><td class="value js_con_value"></td><td class="value js_int_value"></td><td class="value js_wis_value"></td><td class="value js_cha_value"></td></tr></tbody></table><h3 class="form_instruction">Defensive stats</h3><table class="creature_defense"><thead><tr><th class="label js_initive_entry">Initive</th><th class="label js_kac_entry">KAC</th><th class="label js_eac_entry">EAC</th></tr></thead><tbody><tr><td class="value js_initive_value"></td><td class="value js_kac_value"></td><td class="value js_eac_value"></td></tr></tbody></table><h3 class="form_instruction">Offensive stats</h3><table class="creature_offense"><thead><tr><th class="label js_hattack_entry">High Attack</th><th class="label js_lattack_entry">Low Attack</th><th class="label js_edmg_entry">Base Energy Damage</th><th class="label js_kdmg_entry">Base Kinetic Damage</th><th class="label js_mdmg_entry">Base Melee Damage</th><th class="label js_3mdmg_entry hidden">3 Melee Attacks Damage</th><th class="label js_4mdmg_entry hidden">4 Melee Attacks Damage</th></tr></thead><tbody><tr><td class="value js_hattack_value"></td><td class="value js_lattack_value"></td><td class="value js_edmg_value"></td><td class="value js_kdmg_value"></td><td class="value js_mdmg_value"></td><td class="value js_3mdmg_value hidden"></td><td class="value js_4mdmg_value hidden"></td></tr><tr><td class="action js_hattack_action"><button class="roll_button js_roll_hattack">Roll</button></td><td class="action js_lattack_action"><button class="roll_button js_roll_lattack">Roll</button></td><td class="action js_edmg_action"><button class="roll_button js_roll_edmg">Roll</button></td><td class="action js_kdmg_action"><button class="roll_button js_roll_kdmg">Roll</button></td><td class="action js_mdmg_action"><button class="roll_button js_roll_mdmg">Roll</button></td><td class="action js_3mdmg_action hidden"><button class="roll_button js_roll_3mdmg">Roll</button></td><td class="action js_4mdmg_action hidden"><button class="roll_button js_roll_4mdmg">Roll</button></td></tr></tbody></table><h3 class="form_instruction">Weapons</h3><table class="creature_weapons"><tbody></tbody></table><h3 class="form_instruction">Skills</h3><table class="creature_skills"><tbody></tbody></table><h3 class="form_instruction">Special abilities/class features</h3><table class="creature_sas"><tbody></tbody></table><div class="roll_results"></div></div>`;
+    const skillsSelectorTemplate = `<li class="input_group"><label></label><div class="fancy_select"><select class="skill_selector"><option>Acrobatics</option><option>Athletics</option><option>Bluff</option><option>Computers</option><option>Culture</option><option>Diplomacy</option><option>Disguise</option><option>Engineering</option><option>Intimidate</option><option>Life Science</option><option>Medicine</option><option>Mysticism</option><option>Perception</option><option>Physical Science</option><option>Piloting</option><option>Profession</option><option>Sense Motive</option><option>Sleight of Hand</option><option>Stealth</option><option>Survival</option></select></div></li>`;
     const validationErrorTemplate = "<p class='validation_error'></p>";
     const rollReportTemplate = `<div class="dice_roll"><p class="result"></p><p class="report"></p></div>`;
     const goodSkillsID = "good_skill";
@@ -75,7 +79,6 @@ function setupUI(myApp){
     var $npcAbility2Radios = $("input[name='npc_ability2']");
     
     // set sane defaults to all the fields except name
-    $npcCRField.val("0.33");// this needs to change when this field is replaced with a better control
     $($npcTypeRadios[0]).attr("checked", "true");
     $($npcAbility0Radios[0]).attr("checked", "true");
     $($npcAbility1Radios[1]).attr("checked", "true");
@@ -87,6 +90,7 @@ function setupUI(myApp){
     var $npcSelectedAbility1 = $("input[name='npc_ability1']:checked");
     var $npcSelectedAbility2 = $("input[name='npc_ability2']:checked");
 
+    //TODO: check to make sure all of these actually still need to be available to the outside
     var publicAPI = {
         $npcCRField,
         $npcTypeRadios,
@@ -111,7 +115,12 @@ function setupUI(myApp){
     $createButton.click(handleSubmit);
 
     return publicAPI;
+
+    // *****************************************************
     
+    // Event Handlers
+
+    // Handle the click of the "roll character" button
     function handleSubmit(e){
         var absValid = validateAbilityScores(publicAPI.$npcSelectedAbility0);
         var skillsValid = validateSkillSelections();
@@ -161,6 +170,7 @@ function setupUI(myApp){
         }
     }
 
+    // Handle a change in the npc_type radio group
     function handleTypeChange(e){
         //update the selectedType object
         publicAPI.$npcSelectedType = $(this);
@@ -170,6 +180,7 @@ function setupUI(myApp){
         updateAvailableSkillsSelectors();
     }
 
+    // Handle a change in the npc_ability0, npc_ability1,and npc_ability2 radio groups
     function handleAbilityChange(e){
         //update the correct selectAbility object
         switch ($(this).attr("name").slice(-1)){
@@ -188,6 +199,83 @@ function setupUI(myApp){
         console.log(`Selected Ability is ${$(this).attr('name')} set to ${$(this).val()}`);
     }
 
+    // Handle a click of the "roll" button to roll a high attack
+    function handleRollBasicHighAttack(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicAttack("high");
+        displayRollResult(npcID, roll, "Basic High Attack");
+    }
+
+    // Handle a click of the "roll" button to roll a low attack
+    function handleRollBasicLowAttack(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicAttack("low");
+        displayRollResult(npcID, roll, "Basic Low Attack");
+    }
+
+    // Handle a click of the "roll" button to roll Base Energy Damage
+    function handleRollBasicEnergyDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("energy");
+        displayRollResult(npcID, roll, "Basic Energy DMG");
+    }
+
+    // Handle a click of the "roll" button to roll Base Kinetic Damage
+    function handleRollBasicKineticDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("kinetic");
+        displayRollResult(npcID, roll, "Basic Kinetic DMG");
+    }
+
+    // Handle a click of the "roll" button to roll Base Melee Damage
+    function handleRollBasicMeleeDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("melee");
+        displayRollResult(npcID, roll, "Basic Melee DMG");
+    }
+
+    // Handle a click of the "roll" button to roll Base Three Attacks Melee Damage
+    function handleRollBasicThreeMeleeDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("threemelee");
+        displayRollResult(npcID, roll, "Basic Three Melee DMG");
+    }
+
+    // Handle a click of the "roll" button to roll Base Four Attacks Melee Damage
+    function handleRollBasicFourMeleeDmg(e) {
+        var npcID = findMyCreatureBlockID($(this));
+        var npc = myApp.npcs[npcID];
+        var roll = npc.rollBasicDamage("fourmelee");
+        displayRollResult(npcID, roll, "Basic Four Melee DMG");
+    }
+
+    // A helper function for the roll click handlers to find their parent creature_block's ID in $statblocs
+    function findMyCreatureBlockID(node) {
+        var search = node.parents();
+        var $parent;
+        for (let i = 0; i < search.length; i++) {
+            if ($(search[i]).hasClass(`creature_block`)) {
+                $parent = $(search[i]);
+                break;
+            }
+        }
+        for (let i = 0; i < publicAPI.$statblocs.length; i++) {
+            if ($parent[0] === publicAPI.$statblocs[i][0]) {
+                return i;
+            }
+        }
+        return undefined;
+    }
+
+    // DOM manipulators
+
+    // Function to adjust the number of Skill selectors in the creation form based on changes in NPC Type
     function updateAvailableSkillsSelectors(){
         var currentCR = publicAPI.$npcCRField.val();
         var currentType = publicAPI.$npcSelectedType.val();
@@ -244,6 +332,8 @@ function setupUI(myApp){
             }
         }
     }
+
+    // Helper function for updateAvailableSkillsSelectors(), creates and inserts new skill selector nodes
     function addSkillSelectors(skillType, start, newCount){
         for(let i = start; i < newCount; i++){
             let $skillSelector = $(skillsSelectorTemplate);
@@ -253,56 +343,16 @@ function setupUI(myApp){
             $(`.${skillType}_list`).append($skillSelector);
         }
     }
+
+    // Helper function for updateAvailableSkillsSelectors(), removes extra skill selector nodes
     function removeSkillSelectors(skillType, newCount){
         for (let i = $(`.${skillType}_list .skill_selector`).length; i > newCount; i--) {
             $(`#${skillType}_${i-1}`).parent().remove();
         }
     }
 
-    function validateSkillSelections(){
-        // if there are errors clear them here, we'll replace them if they aren't fixed
-        $('.skills_section > .validation_error').remove();
-        var $skills = $(".skill_selector");
-        var result = true;
-        console.log(`Starting skill validation. Result: ${result}`);
-        for(let j = 0; j < $skills.length; j++){
-            for(let i = $skills.length - 1; i > j; i--){
-                if( $($skills[j]).val() === $($skills[i]).val()){
-                    // Two skills are the same, fire an error message
-                    console.log("two skills are the same!!!!");
-                    result = false;
-                    let skillType = $skills[j].id.slice(0, $skills[j].id.lastIndexOf("_"));
-                    insertValidationError(`.${skillType}_list`, skillType, "You cannot choose the same skill more than once"); 
-                }
-            }
-        }
-        console.log(`Ending skill validation. Result: ${result}`);
-        return result;
-
-    }
-    function validateAbilityScores(newScore){
-        console.log(`validating: newScore.name = ${newScore.attr('name')}`);
-        //var changed = $newscore.attr("name").slice(-1);
-        var rg = [publicAPI.$npcSelectedAbility0, publicAPI.$npcSelectedAbility1, publicAPI.$npcSelectedAbility2];
-        var rg0 = publicAPI.$npcSelectedAbility0;
-        var rg1 = publicAPI.$npcSelectedAbility1;
-        var rg2 = publicAPI.$npcSelectedAbility2;
-        var result = true;
-        var errorMessage = "You cannot choose the same ability more than once";
-        $('.ability_scores_section .validation_error').remove();
-        for(let i = 0; i < rg.length; i++){
-            // check if that we're not comparing something to itself & that they are the same value
-            if(newScore.attr("name") != rg[i].attr("name") && newScore.val() === rg[i].val()){  
-                console.log("it's a dupe!");
-                result = false;
-                insertValidationError(`.js_${newScore.attr("name")}_list`, newScore.attr("name"), errorMessage);
-                insertValidationError(`.js_${rg[i].attr("name")}_list`, rg[i].attr("name"), errorMessage);
-            }
-        }
-        return result;
-    }
-
-    function insertValidationError(node, errorName, message){
+    // A function to add validaton error messages to the UI
+    function insertValidationError(node, errorName, message) {
         //set error message 
         let $error = $(validationErrorTemplate);
         $error.addClass(`${errorName}_error`);
@@ -310,7 +360,8 @@ function setupUI(myApp){
         $(node).before($error);
     }
 
-    function displayStatBlock(npc){
+    // A function to build and insert a completed creature_block into the UI
+    function displayStatBlock(npc) {
         var $statbloc = $(creatureBlockTemplate);
         var creature_id_class = `js_creature_${$statblocs.length}`;
         $statbloc.addClass(creature_id_class);
@@ -338,9 +389,9 @@ function setupUI(myApp){
         $(`.js_roll_kdmg`, $statbloc).click(handleRollBasicKineticDmg);
         $(`.js_mdmg_value`, $statbloc).text(npc.defautmeleedmg);
         $(`.js_roll_mdmg`, $statbloc).click(handleRollBasicMeleeDmg);
-        
+
         // check if the npc has three melee attacks
-        if(npc.defaultmeleethreedmg != ""){
+        if (npc.defaultmeleethreedmg != "") {
             // add the entries for the three attacks damage to the table
             $(`.js_3mdmg_entry`, $statbloc).removeClass("hidden");
             $(`.js_3mdmg_value`, $statbloc).removeClass("hidden");
@@ -357,7 +408,7 @@ function setupUI(myApp){
             $(`.js_roll_4mdmg`, $statbloc).click(handleRollBasicFourMeleeDmg);
         }
         // fill in the skills table
-        for(let i = 0; i < npc.skills.length; i++){
+        for (let i = 0; i < npc.skills.length; i++) {
             let skill = `<tr><td class="label ${npc.skills[i].name}_skill_label">${npc.skills[i].name}</td><td class="value ${npc.skills[i].modifier}_skill_value">+${npc.skills[i].modifier}</td></tr>`;
             $(`.creature_skills tbody`, $statbloc).append(skill);
         }
@@ -366,72 +417,8 @@ function setupUI(myApp){
         $(".statblocs_section").append($statbloc);
     }
 
-    function handleRollBasicHighAttack(e){
-        var npcID = findMyCreatureBlockID($(this));
-        var npc = myApp.npcs[npcID];
-        var roll = npc.rollBasicAttack("high");
-        displayRollResult(npcID, roll, "Basic High Attack");
-    }
-
-    function handleRollBasicLowAttack(e) {
-        var npcID = findMyCreatureBlockID($(this));
-        var npc = myApp.npcs[npcID];
-        var roll = npc.rollBasicAttack("low");
-        displayRollResult(npcID, roll, "Basic Low Attack");
-    }
-
-    function handleRollBasicEnergyDmg(e) {
-        var npcID = findMyCreatureBlockID($(this));
-        var npc = myApp.npcs[npcID];
-        var roll = npc.rollBasicDamage("energy");
-        displayRollResult(npcID, roll, "Basic Energy DMG");
-    }
-
-    function handleRollBasicKineticDmg(e) {
-        var npcID = findMyCreatureBlockID($(this));
-        var npc = myApp.npcs[npcID];
-        var roll = npc.rollBasicDamage("kinetic");
-        displayRollResult(npcID, roll, "Basic Kinetic DMG");
-    }
-
-    function handleRollBasicMeleeDmg(e) {
-        var npcID = findMyCreatureBlockID($(this));
-        var npc = myApp.npcs[npcID];
-        var roll = npc.rollBasicDamage("melee");
-        displayRollResult(npcID, roll, "Basic Melee DMG");
-    }
-
-    function handleRollBasicThreeMeleeDmg(e) {
-        var npcID = findMyCreatureBlockID($(this));
-        var npc = myApp.npcs[npcID];
-        var roll = npc.rollBasicDamage("threemelee");
-        displayRollResult(npcID, roll, "Basic Three Melee DMG");
-    }
-
-    function handleRollBasicFourMeleeDmg(e) {
-        var npcID = findMyCreatureBlockID($(this));
-        var npc = myApp.npcs[npcID];
-        var roll = npc.rollBasicDamage("fourmelee");
-        displayRollResult(npcID, roll, "Basic Four Melee DMG");
-    }
-
-    function findMyCreatureBlockID(node){
-        var search = node.parents();
-        var $parent;
-        for(let i = 0; i < search.length; i++){
-            if($(search[i]).hasClass(`creature_block`)){
-                $parent = $(search[i]);
-                break;
-            }
-        }
-        for(let i = 0; i < publicAPI.$statblocs.length;i++){
-            if($parent[0] === publicAPI.$statblocs[i][0]){
-                return i;
-            }
-        }
-        return undefined;
-    }
-    function displayRollResult(npcID, roll, label){
+    // A function to create and insert a dice_roll node into the UI
+    function displayRollResult(npcID, roll, label) {
         var $activity = $(rollReportTemplate);
         $("p.result", $activity).text(`${label}: ${roll.result}`);
         $("p.report", $activity).text(roll.report);
@@ -440,8 +427,75 @@ function setupUI(myApp){
         }
         $(`div.js_creature_${npcID} .roll_results`).append($activity);
     }
+
+    // Validators
+
+    // Check the skill selectors for duplicates, return false if duplicate skills are selected
+    function validateSkillSelections(){
+        // if there are errors clear them here, we'll replace them if they aren't fixed
+        $('.skills_section .validation_error').remove();
+        var $skills = $(".skill_selector");
+        var result = true;
+        console.log(`Starting skill validation. Result: ${result}`);
+        for(let j = 0; j < $skills.length; j++){
+            for(let i = $skills.length - 1; i > j; i--){
+                if( $($skills[j]).val() === $($skills[i]).val()){
+                    // Two skills are the same, fire an error message
+                    console.log("two skills are the same!!!!");
+                    result = false;
+                    let skillType = $skills[j].id.slice(0, $skills[j].id.lastIndexOf("_"));
+                    if ($(`.skills_section .${skillType}_error`).length < 1){
+                        insertValidationError(`.${skillType}_list`, skillType, "You cannot choose the same skill more than once"); 
+                    }
+                }
+            }
+        }
+        console.log(`Ending skill validation. Result: ${result}`);
+        return result;
+    }
+
+    // Check that the selected item in each ability modifier radio group is unique, 
+    // return false if an ability is selected more than once
+    function validateAbilityScores($newScore){
+        console.log(`validating: newScore.name = ${$newScore.attr('name')}`);
+        //var changed = $newscore.attr("name").slice(-1);
+        var $rg = [publicAPI.$npcSelectedAbility0, publicAPI.$npcSelectedAbility1, publicAPI.$npcSelectedAbility2];
+        var result = true;
+        var errorMessage = "You cannot choose the same ability more than once";
+        var $leftovers = [];
+        $('.ability_scores_section .validation_error').remove();
+        for(let i = 0; i < $rg.length; i++){
+            // check if that we're not comparing something to itself & that they are the same value
+            if($newScore.attr("name") != $rg[i].attr("name")){  
+                // push the item being compared into an array so the left overs can be compared to themselves at the end
+                $leftovers.push($rg[i]);
+                if ($newScore.val() === $rg[i].val()){
+                    console.log("it's a dupe!");
+                    result = false;
+                    if ($(`.ability_scores_section .${$newScore.attr("name")}_error`).length < 1) {
+                        insertValidationError(`.js_${$newScore.attr("name")}_list`, $newScore.attr("name"), errorMessage);
+                    }
+                    if ($(`.ability_scores_section .${$rg[i].attr("name")}_error`).length < 1) {
+                        insertValidationError(`.js_${$rg[i].attr("name")}_list`, $rg[i].attr("name"), errorMessage);
+                    }
+                }
+            }
+        }
+        // there are only three radio groups so the leftover check will always be between the two that weren't selected
+        if($leftovers[0].val() === $leftovers[1].val()){
+            result = false;
+            if ($(`.ability_scores_section .${$leftovers[0].attr("name")}_error`).length < 1) {
+                insertValidationError(`.js_${$leftovers[0].attr("name")}_list`, $leftovers[0].attr("name"), errorMessage);
+            }
+            if ($(`.ability_scores_section .${$leftovers[1].attr("name")}_error`).length < 1) {
+                insertValidationError(`.js_${$leftovers[1].attr("name")}_list`, $leftovers[1].attr("name"), errorMessage);
+            }
+        }
+        return result;
+    }
 }
 
+// The logic powering the application
 function setupMobGenerator(){
     var combatant_stats;
     var expert_stats;
@@ -469,7 +523,8 @@ function setupMobGenerator(){
     // skills:    An array of strings represnting skill names in the order master skills before good skills.
     function generateGenericNPC(base, name = "rando NPC", cr, abilities, skills) {
         var mob = {
-            "id": `npc_${name}_${cr}_${skills.length}`, 
+            "id": `npc_${name}_${cr}_${skills.length}`,
+            "cr": cr, 
             "name": name,
             "str": 0,
             "dex": 0,

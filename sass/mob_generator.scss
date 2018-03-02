@@ -1,9 +1,226 @@
 @import "normalize.css";
 
+
+$title-face: 'Oswald', sans-serif;
+$body-face: 'PT Sans', sans-serif;
+$title-reg: 400;
+$title-semibold: 600;
+$radio-check-sprites: url('../img/radio-check-sprites.png');
+//==== primary blues
+$drkblue: #101c2e; //rgba(16, 28, 46, 1)
+$medblue: #123f88; //rgba(18, 63, 136, 1)
+$lightblue: #90b4f0;//rgba(144, 180, 240, 1)
+$brightblue: #1c71ff; // rgba(28, 113, 255, 1)   //primary color
+//==== accent colors
+$orange: #cc5702; // rgba(204, 87, 2, 1)
+$purple: #5a4e99; // rgba(90, 78, 153, 1)
+$lightgold: #ffb95b; // rgba(255, 185, 91, 1)
+$green: #95cc02; // rgba(149, 204, 2, 1)
+$white: #fff; // for BGs only
+
 * {
  box-sizing: border-box;   
 }
 
+body{
+    font-family: $body-face;
+    font-size: 16px;
+}
+
 .hidden {
     display: none;
+}
+
+.radio-button {
+    margin: 0;
+  
+    input[type="radio"] {
+        vertical-align: middle;
+        outline: none;
+    }
+
+    label{
+        font-size: 1.1rem;
+    }
+
+    input[type="radio"] + label {
+        cursor: pointer;
+    }
+
+    input[type="radio"] + label::before {
+        content: '';
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        margin: 1px 2px 0 -29px;
+        vertical-align: middle;
+    }
+    input[type="radio"] + label::before {
+        background: $radio-check-sprites -72px top no-repeat;
+    }
+
+    input[type="radio"]:checked + label::before {
+        background: $radio-check-sprites -108px top no-repeat;
+    }
+}
+
+input,
+button,
+select {
+    outline: none;
+}
+
+.fancy_select {
+    // bg image needed here for arrow button to show up
+    background-color: lighten($brightblue,35%);
+    width: 100px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    
+    select {
+        background: transparent;
+        color: $drkblue;
+        border: none;
+        font-size: 1rem;
+        height: 36px;
+        padding: 5px;
+        width: 100px;
+    }
+}
+
+.form_instruction {
+    display:block;
+    font-family: $title-face;
+    font-weight: $title-reg;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+}
+
+.flex_container {
+    display: flex;
+
+    .creation_form {
+        flex: 0 0 759px;
+    }
+    .statblocs_section {
+        flex: 1;
+    }
+}
+.creation_form {
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid;
+
+    h1 {
+        font-family: $title-face;
+        font-weight: $title-semibold;
+        flex: 1 0 100%;
+    }
+
+    section {
+        flex: 1 0 500px;
+        padding: 1rem 0 0.5rem;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+
+    }
+
+    input[type="text"] {
+        border: none;
+        border-bottom: 1px solid $brightblue;
+        width:300px;
+        font-size: 1.4rem;
+    }
+
+    .input_group {
+        margin-bottom: 0.5rem;
+    }
+    .radio_choice_list {
+        li {
+            display: inline-block;
+            padding: 0 0.5rem;
+        }
+    }
+
+    .basic_info {
+        display: flex;
+        flex-wrap: wrap;
+
+        .input_group {
+            flex: 1 0;
+        }
+
+        .npc_type_group {
+            flex: 1 0 100%;
+        }
+
+    }
+    .skills_section {
+        display: flex;
+        flex-wrap: wrap;
+
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+        .master_skills,
+        .good_skills {
+            flex: 1 0;
+        }
+    }
+
+    .fancy_select {
+        width: 200px;
+        
+
+        select {
+            width: 200px;
+            
+        }
+    }
+    
+    .submit_button {
+        display: block;
+        background: lighten($brightblue,35%);
+        border: none;
+        color: $drkblue;
+        font-family: $title-face;
+        font-size: 1.3rem;
+        margin: 0 auto;
+        width: 200px;
+        padding: 0.5rem;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .validation_error {
+        color: $orange;
+    }
+
+}
+
+.statblocs_section {
+    padding: 1rem;
+
+    .creature_block {
+        padding: 0.5rem;
+        width: 450px;
+        border-top: 2px solid $brightblue;
+        border-bottom: 4px solid $brightblue;
+
+        .creature_name {
+            font-family: $title-face;
+
+        }
+    }
+    td {
+        text-align: center;
+    }
 }
